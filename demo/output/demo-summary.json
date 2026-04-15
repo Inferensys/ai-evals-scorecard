@@ -1,0 +1,24 @@
+[
+  {
+    "name": "baseline",
+    "overall_score": 47.763,
+    "threshold_failures": 4,
+    "model": "azure-openai/gpt-5.4",
+    "passed_cases": 0,
+    "failed_cases": 2
+  },
+  {
+    "name": "candidate",
+    "overall_score": 100.0,
+    "threshold_failures": 0,
+    "model": "azure-openai/gpt-5.4",
+    "passed_cases": 2,
+    "failed_cases": 0
+  },
+  {
+    "name": "comparison",
+    "overall_delta": 52.237,
+    "new_threshold_failures": 0,
+    "resolved_threshold_failures": 4
+  }
+]

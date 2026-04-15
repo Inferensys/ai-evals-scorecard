@@ -7,6 +7,8 @@ from typing import Any, Dict, List
 import yaml
 
 from ai_evals_scorecard.models import (
+    CaseEvaluation,
+    CaseMetricResult,
     CaseSummary,
     DatasetRow,
     DomainConfig,
@@ -31,6 +33,7 @@ def load_dataset(path: Path) -> List[DatasetRow]:
                 case_id=payload["case_id"],
                 task_type=payload["task_type"],
                 input=payload.get("input", {}),
+                observed=payload.get("observed", {}),
                 expected=payload.get("expected", {}),
                 metadata=payload.get("metadata", {}),
             )
@@ -100,6 +103,29 @@ def load_report(path: Path) -> RunReport:
         )
         for item in payload.get("metric_summaries", [])
     ]
+    case_evaluations = [
+        CaseEvaluation(
+            case_id=str(item["case_id"]),
+            task_type=str(item["task_type"]),
+            passed=bool(item["passed"]),
+            metrics=[
+                CaseMetricResult(
+                    domain=str(metric["domain"]),
+                    name=str(metric["name"]),
+                    operator=str(metric["operator"]),
+                    threshold=float(metric["threshold"]),
+                    value=float(metric["value"]),
+                    passed=bool(metric["passed"]),
+                    source=str(metric.get("source", "unknown")),
+                    rationale=(
+                        None if metric.get("rationale") is None else str(metric.get("rationale"))
+                    ),
+                )
+                for metric in item.get("metrics", [])
+            ],
+        )
+        for item in payload.get("case_evaluations", [])
+    ]
     case_payload = payload.get("case_summary", {})
     case_summary = CaseSummary(
         total=int(case_payload.get("total", 0)),
@@ -118,6 +144,7 @@ def load_report(path: Path) -> RunReport:
         case_summary=case_summary,
         created_at=str(payload["created_at"]),
         metric_summaries=metric_summaries,
+        case_evaluations=case_evaluations,
     )
 
 

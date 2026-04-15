@@ -1,8 +1,6 @@
 # Evaluation Schema
 
-This schema is intentionally compact and can be adapted to JSON Schema, Pydantic, or Protobuf.
-
-## Dataset Row Shape
+## Dataset Row
 
 ```json
 {
@@ -10,8 +8,16 @@ This schema is intentionally compact and can be adapted to JSON Schema, Pydantic
   "task_type": "qa|workflow|tool_call|classification",
   "input": {
     "prompt": "string",
-    "context": {},
-    "tool_state": {}
+    "context": {}
+  },
+  "observed": {
+    "output_text": "string",
+    "actions": ["string"],
+    "policy_flags": ["string"],
+    "metrics": {
+      "latency_ms": 0,
+      "cost_usd": 0.0
+    }
   },
   "expected": {
     "answer_contains": ["string"],
@@ -27,7 +33,7 @@ This schema is intentionally compact and can be adapted to JSON Schema, Pydantic
 }
 ```
 
-## Scorecard Shape
+## Scorecard
 
 ```yaml
 version: 1
@@ -36,40 +42,50 @@ domains:
     weight: 0.45
     metrics:
       - name: answer_correctness
-        threshold: 0.85
+        threshold: 0.80
       - name: policy_compliance
-        threshold: 1.00
+        threshold: 0.90
   execution:
     weight: 0.25
+    metrics:
+      - name: workflow_completion
+        threshold: 0.85
   latency:
     weight: 0.20
+    metrics:
+      - name: p95_latency_ms
+        threshold: 1800
+        operator: "<="
   cost:
     weight: 0.10
+    metrics:
+      - name: avg_cost_usd
+        threshold: 0.035
+        operator: "<="
 ```
 
-## Run Report Shape
+## Run Report
 
 ```json
 {
-  "run_id": "run_2026_04_15_001",
-  "dataset_id": "support_v4",
-  "model": "provider/model@version",
-  "runner_commit": "git_sha",
+  "run_id": "demo_candidate_20260416",
+  "dataset_id": "dataset.candidate",
+  "model": "azure-openai/gpt-5.4",
   "domain_scores": {
-    "quality": 88.1,
-    "execution": 92.4,
-    "latency": 81.0,
-    "cost": 76.8
+    "quality": 100.0,
+    "execution": 100.0,
+    "latency": 100.0,
+    "cost": 100.0
   },
-  "overall_score": 86.1,
-  "regressions": [],
-  "created_at": "2026-04-15T12:05:00Z"
+  "overall_score": 100.0,
+  "metric_summaries": [],
+  "case_evaluations": [],
+  "threshold_failures": []
 }
 ```
 
-## Validation Rules
+## Metric Sources
 
-- `case_id` must be stable across runs.
-- Missing domain scores fail the run.
-- Unknown metric names are hard errors.
-- Threshold checks are per metric and for weighted aggregate.
+- semantic metrics come from the judge backend
+- telemetry metrics come from `observed.metrics`
+- thresholding and normalization are always local

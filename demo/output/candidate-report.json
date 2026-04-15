@@ -1,0 +1,184 @@
+{
+  "case_evaluations": [
+    {
+      "case_id": "case_001",
+      "metrics": [
+        {
+          "domain": "latency",
+          "name": "p95_latency_ms",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 1800.0,
+          "value": 1420.0
+        },
+        {
+          "domain": "cost",
+          "name": "avg_cost_usd",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 0.035,
+          "value": 0.028
+        },
+        {
+          "domain": "quality",
+          "name": "answer_correctness",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "Observed output matches the requested task: pause renewal for account acct_882 for one cycle and notify the billing owner. It includes the correct account and billing owner and adds the expected approval flag.",
+          "source": "azure-openai",
+          "threshold": 0.8,
+          "value": 1.0
+        },
+        {
+          "domain": "quality",
+          "name": "policy_compliance",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "Observed policy flags include requires_approval exactly as expected, with no missing or conflicting policy behavior indicated.",
+          "source": "azure-openai",
+          "threshold": 0.9,
+          "value": 1.0
+        },
+        {
+          "domain": "execution",
+          "name": "workflow_completion",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "All required actions are present: pause_renewal and send_notification. The workflow appears fully completed according to the expected actions.",
+          "source": "azure-openai",
+          "threshold": 0.85,
+          "value": 1.0
+        }
+      ],
+      "passed": true,
+      "task_type": "workflow"
+    },
+    {
+      "case_id": "case_002",
+      "metrics": [
+        {
+          "domain": "latency",
+          "name": "p95_latency_ms",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 1800.0,
+          "value": 810.0
+        },
+        {
+          "domain": "cost",
+          "name": "avg_cost_usd",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 0.035,
+          "value": 0.013
+        },
+        {
+          "domain": "quality",
+          "name": "answer_correctness",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "The response correctly identifies the cause of the higher invoice as the seat expansion line item, matching the provided context and expected answer content.",
+          "source": "azure-openai",
+          "threshold": 0.8,
+          "value": 1.0
+        },
+        {
+          "domain": "quality",
+          "name": "policy_compliance",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "The response contains no forbidden terms and does not violate any indicated policy constraints.",
+          "source": "azure-openai",
+          "threshold": 0.9,
+          "value": 1.0
+        },
+        {
+          "domain": "execution",
+          "name": "workflow_completion",
+          "operator": ">=",
+          "passed": true,
+          "rationale": "For this QA task, the expected workflow is simply to answer using the provided context; the response does so completely without requiring additional actions.",
+          "source": "azure-openai",
+          "threshold": 0.85,
+          "value": 1.0
+        }
+      ],
+      "passed": true,
+      "task_type": "qa"
+    }
+  ],
+  "case_summary": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 2,
+    "total": 2
+  },
+  "created_at": "2026-04-15T20:10:11Z",
+  "dataset_id": "dataset.candidate",
+  "domain_scores": {
+    "cost": 100.0,
+    "execution": 100.0,
+    "latency": 100.0,
+    "quality": 100.0
+  },
+  "metric_summaries": [
+    {
+      "domain": "quality",
+      "name": "answer_correctness",
+      "normalized_score": 100.0,
+      "operator": ">=",
+      "passed": true,
+      "threshold": 0.8,
+      "value": 1.0
+    },
+    {
+      "domain": "quality",
+      "name": "policy_compliance",
+      "normalized_score": 100.0,
+      "operator": ">=",
+      "passed": true,
+      "threshold": 0.9,
+      "value": 1.0
+    },
+    {
+      "domain": "execution",
+      "name": "workflow_completion",
+      "normalized_score": 100.0,
+      "operator": ">=",
+      "passed": true,
+      "threshold": 0.85,
+      "value": 1.0
+    },
+    {
+      "domain": "latency",
+      "name": "p95_latency_ms",
+      "normalized_score": 100.0,
+      "operator": "<=",
+      "passed": true,
+      "threshold": 1800.0,
+      "value": 1420.0
+    },
+    {
+      "domain": "cost",
+      "name": "avg_cost_usd",
+      "normalized_score": 100.0,
+      "operator": "<=",
+      "passed": true,
+      "threshold": 0.035,
+      "value": 0.0205
+    }
+  ],
+  "model": "azure-openai/gpt-5.4",
+  "overall_score": 100.0,
+  "run_id": "demo_candidate_20260416",
+  "runner_commit": "live-demo",
+  "threshold_failures": []
+}

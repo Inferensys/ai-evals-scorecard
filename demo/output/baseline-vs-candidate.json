@@ -1,0 +1,49 @@
+{
+  "base_run_id": "demo_baseline_20260416",
+  "candidate_run_id": "demo_candidate_20260416",
+  "domain_deltas": {
+    "cost": 0.0,
+    "execution": 52.941,
+    "latency": 12.195,
+    "quality": 81.25
+  },
+  "metric_deltas": {
+    "cost.avg_cost_usd": -0.014,
+    "execution.workflow_completion": 0.6,
+    "latency.p95_latency_ms": -630.0,
+    "quality.answer_correctness": 0.7,
+    "quality.policy_compliance": 1.0
+  },
+  "newly_failed_thresholds": [],
+  "overall_delta": 52.237,
+  "resolved_thresholds": [
+    {
+      "actual": 0.4,
+      "domain": "execution",
+      "metric": "workflow_completion",
+      "operator": ">=",
+      "threshold": 0.85
+    },
+    {
+      "actual": 2050.0,
+      "domain": "latency",
+      "metric": "p95_latency_ms",
+      "operator": "<=",
+      "threshold": 1800.0
+    },
+    {
+      "actual": 0.3,
+      "domain": "quality",
+      "metric": "answer_correctness",
+      "operator": ">=",
+      "threshold": 0.8
+    },
+    {
+      "actual": 0.0,
+      "domain": "quality",
+      "metric": "policy_compliance",
+      "operator": ">=",
+      "threshold": 0.9
+    }
+  ]
+}

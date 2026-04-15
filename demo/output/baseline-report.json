@@ -1,0 +1,213 @@
+{
+  "case_evaluations": [
+    {
+      "case_id": "case_001",
+      "metrics": [
+        {
+          "domain": "latency",
+          "name": "p95_latency_ms",
+          "operator": "<=",
+          "passed": false,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 1800.0,
+          "value": 2050.0
+        },
+        {
+          "domain": "cost",
+          "name": "avg_cost_usd",
+          "operator": "<=",
+          "passed": false,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 0.035,
+          "value": 0.048
+        },
+        {
+          "domain": "quality",
+          "name": "answer_correctness",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "The response acknowledges pausing renewal for the correct account but does not complete the requested notification to the billing owner and only vaguely defers it.",
+          "source": "azure-openai",
+          "threshold": 0.8,
+          "value": 0.4
+        },
+        {
+          "domain": "quality",
+          "name": "policy_compliance",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "The expected policy flag requires_approval was not raised despite being required for this workflow.",
+          "source": "azure-openai",
+          "threshold": 0.9,
+          "value": 0.0
+        },
+        {
+          "domain": "execution",
+          "name": "workflow_completion",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "Only one of two required actions was executed: pause_renewal occurred, but send_notification was not performed.",
+          "source": "azure-openai",
+          "threshold": 0.85,
+          "value": 0.5
+        }
+      ],
+      "passed": false,
+      "task_type": "workflow"
+    },
+    {
+      "case_id": "case_002",
+      "metrics": [
+        {
+          "domain": "latency",
+          "name": "p95_latency_ms",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 1800.0,
+          "value": 930.0
+        },
+        {
+          "domain": "cost",
+          "name": "avg_cost_usd",
+          "operator": "<=",
+          "passed": true,
+          "rationale": "Value read from observed telemetry.",
+          "source": "telemetry",
+          "threshold": 0.035,
+          "value": 0.021
+        },
+        {
+          "domain": "quality",
+          "name": "answer_correctness",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "The response does not identify the provided cause, 'seat expansion', and instead gives a vague statement.",
+          "source": "azure-openai",
+          "threshold": 0.8,
+          "value": 0.2
+        },
+        {
+          "domain": "quality",
+          "name": "policy_compliance",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "The response includes the forbidden phrase 'I do not have access', violating the expected constraint.",
+          "source": "azure-openai",
+          "threshold": 0.9,
+          "value": 0.0
+        },
+        {
+          "domain": "execution",
+          "name": "workflow_completion",
+          "operator": ">=",
+          "passed": false,
+          "rationale": "The model failed to use the available context to answer the question, so the task was only minimally completed.",
+          "source": "azure-openai",
+          "threshold": 0.85,
+          "value": 0.3
+        }
+      ],
+      "passed": false,
+      "task_type": "qa"
+    }
+  ],
+  "case_summary": {
+    "errors": 0,
+    "failed": 2,
+    "passed": 0,
+    "total": 2
+  },
+  "created_at": "2026-04-15T20:10:03Z",
+  "dataset_id": "dataset.baseline",
+  "domain_scores": {
+    "cost": 100.0,
+    "execution": 47.059,
+    "latency": 87.805,
+    "quality": 18.75
+  },
+  "metric_summaries": [
+    {
+      "domain": "quality",
+      "name": "answer_correctness",
+      "normalized_score": 37.5,
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.8,
+      "value": 0.3
+    },
+    {
+      "domain": "quality",
+      "name": "policy_compliance",
+      "normalized_score": 0.0,
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.9,
+      "value": 0.0
+    },
+    {
+      "domain": "execution",
+      "name": "workflow_completion",
+      "normalized_score": 47.059,
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.85,
+      "value": 0.4
+    },
+    {
+      "domain": "latency",
+      "name": "p95_latency_ms",
+      "normalized_score": 87.805,
+      "operator": "<=",
+      "passed": false,
+      "threshold": 1800.0,
+      "value": 2050.0
+    },
+    {
+      "domain": "cost",
+      "name": "avg_cost_usd",
+      "normalized_score": 100.0,
+      "operator": "<=",
+      "passed": true,
+      "threshold": 0.035,
+      "value": 0.0345
+    }
+  ],
+  "model": "azure-openai/gpt-5.4",
+  "overall_score": 47.763,
+  "run_id": "demo_baseline_20260416",
+  "runner_commit": "live-demo",
+  "threshold_failures": [
+    {
+      "actual": 0.3,
+      "domain": "quality",
+      "metric": "answer_correctness",
+      "operator": ">=",
+      "threshold": 0.8
+    },
+    {
+      "actual": 0.0,
+      "domain": "quality",
+      "metric": "policy_compliance",
+      "operator": ">=",
+      "threshold": 0.9
+    },
+    {
+      "actual": 0.4,
+      "domain": "execution",
+      "metric": "workflow_completion",
+      "operator": ">=",
+      "threshold": 0.85
+    },
+    {
+      "actual": 2050.0,
+      "domain": "latency",
+      "metric": "p95_latency_ms",
+      "operator": "<=",
+      "threshold": 1800.0
+    }
+  ]
+}

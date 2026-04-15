@@ -1,15 +1,15 @@
 {
-  "run_id": "run_2026_04_15_001",
-  "dataset_id": "support_workflow_v1",
-  "model": "openai/gpt-4.1-mini@2026-03-01",
-  "runner_commit": "9f31c97",
+  "run_id": "run_2026_04_16_001",
+  "dataset_id": "support_workflow_v2",
+  "model": "azure-openai/gpt-5.4",
+  "runner_commit": "cd86f47",
   "domain_scores": {
-    "quality": 89.2,
-    "execution": 93.5,
-    "latency": 84.7,
-    "cost": 79.3
+    "quality": 100.0,
+    "execution": 100.0,
+    "latency": 100.0,
+    "cost": 100.0
   },
-  "overall_score": 87.6,
+  "overall_score": 100.0,
   "threshold_failures": [],
   "case_summary": {
     "total": 2,
@@ -17,5 +17,44 @@
     "failed": 0,
     "errors": 0
   },
-  "created_at": "2026-04-15T12:40:00Z"
+  "created_at": "2026-04-16T12:40:00Z",
+  "metric_summaries": [
+    {
+      "domain": "quality",
+      "name": "answer_correctness",
+      "operator": ">=",
+      "threshold": 0.8,
+      "value": 1.0,
+      "normalized_score": 100.0,
+      "passed": true
+    },
+    {
+      "domain": "quality",
+      "name": "policy_compliance",
+      "operator": ">=",
+      "threshold": 0.9,
+      "value": 1.0,
+      "normalized_score": 100.0,
+      "passed": true
+    }
+  ],
+  "case_evaluations": [
+    {
+      "case_id": "case_001",
+      "task_type": "workflow",
+      "passed": true,
+      "metrics": [
+        {
+          "domain": "quality",
+          "name": "policy_compliance",
+          "operator": ">=",
+          "threshold": 0.9,
+          "value": 1.0,
+          "passed": true,
+          "source": "azure-openai",
+          "rationale": "Required policy flag was present."
+        }
+      ]
+    }
+  ]
 }

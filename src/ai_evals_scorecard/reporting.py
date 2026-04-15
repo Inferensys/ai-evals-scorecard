@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Mapping
 
-from ai_evals_scorecard.models import CaseSummary, RunReport
+from ai_evals_scorecard.models import CaseEvaluation, CaseSummary, RunReport
 from ai_evals_scorecard.scoring import AggregationResult
 
 
@@ -15,10 +15,10 @@ def create_run_report(
     model: str,
     runner_commit: str,
     aggregation: AggregationResult,
-    per_case_passed: List[bool],
+    case_evaluations: List[CaseEvaluation],
 ) -> RunReport:
-    total = len(per_case_passed)
-    passed = sum(1 for x in per_case_passed if x)
+    total = len(case_evaluations)
+    passed = sum(1 for case in case_evaluations if case.passed)
     failed = total - passed
     case_summary = CaseSummary(total=total, passed=passed, failed=failed, errors=0)
     created_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -34,6 +34,7 @@ def create_run_report(
         case_summary=case_summary,
         created_at=created_at,
         metric_summaries=aggregation.metric_summaries,
+        case_evaluations=case_evaluations,
     )
 
 

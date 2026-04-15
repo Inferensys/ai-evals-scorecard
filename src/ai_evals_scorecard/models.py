@@ -30,8 +30,21 @@ class DatasetRow:
     case_id: str
     task_type: str
     input: Dict[str, Any]
+    observed: Dict[str, Any]
     expected: Dict[str, Any]
     metadata: Dict[str, Any]
+
+
+@dataclass(frozen=True)
+class MetricRequest:
+    domain: str
+    name: str
+    threshold: float
+    operator: str
+
+    @property
+    def key(self) -> str:
+        return f"{self.domain}.{self.name}"
 
 
 @dataclass(frozen=True)
@@ -43,6 +56,22 @@ class MetricSummary:
     value: float
     normalized_score: float
     passed: bool
+
+    @property
+    def key(self) -> str:
+        return f"{self.domain}.{self.name}"
+
+
+@dataclass(frozen=True)
+class CaseMetricResult:
+    domain: str
+    name: str
+    operator: str
+    threshold: float
+    value: float
+    passed: bool
+    source: str
+    rationale: str | None = None
 
     @property
     def key(self) -> str:
@@ -71,6 +100,14 @@ class CaseSummary:
 
 
 @dataclass(frozen=True)
+class CaseEvaluation:
+    case_id: str
+    task_type: str
+    passed: bool
+    metrics: List[CaseMetricResult]
+
+
+@dataclass(frozen=True)
 class RunReport:
     run_id: str
     dataset_id: str
@@ -82,6 +119,7 @@ class RunReport:
     case_summary: CaseSummary
     created_at: str
     metric_summaries: List[MetricSummary]
+    case_evaluations: List[CaseEvaluation]
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -119,6 +157,27 @@ class RunReport:
                     "passed": m.passed,
                 }
                 for m in self.metric_summaries
+            ],
+            "case_evaluations": [
+                {
+                    "case_id": case.case_id,
+                    "task_type": case.task_type,
+                    "passed": case.passed,
+                    "metrics": [
+                        {
+                            "domain": metric.domain,
+                            "name": metric.name,
+                            "operator": metric.operator,
+                            "threshold": metric.threshold,
+                            "value": metric.value,
+                            "passed": metric.passed,
+                            "source": metric.source,
+                            "rationale": metric.rationale,
+                        }
+                        for metric in case.metrics
+                    ],
+                }
+                for case in self.case_evaluations
             ],
         }
 

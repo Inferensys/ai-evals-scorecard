@@ -37,6 +37,7 @@ def test_report_comparison_deltas_and_failures() -> None:
                 passed=True,
             )
         ],
+        case_evaluations=[],
     )
     candidate = RunReport(
         run_id="cand_001",
@@ -67,6 +68,7 @@ def test_report_comparison_deltas_and_failures() -> None:
                 passed=True,
             )
         ],
+        case_evaluations=[],
     )
 
     comparison = compare_reports(base, candidate)
