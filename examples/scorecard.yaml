@@ -1,0 +1,26 @@
+version: 1
+domains:
+  quality:
+    weight: 0.45
+    metrics:
+      - name: answer_correctness
+        threshold: 0.85
+      - name: policy_compliance
+        threshold: 1.00
+  execution:
+    weight: 0.25
+    metrics:
+      - name: workflow_completion
+        threshold: 0.90
+  latency:
+    weight: 0.20
+    metrics:
+      - name: p95_latency_ms
+        threshold: 2200
+        operator: "<="
+  cost:
+    weight: 0.10
+    metrics:
+      - name: avg_cost_usd
+        threshold: 0.04
+        operator: "<="
