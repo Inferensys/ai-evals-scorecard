@@ -1,0 +1,20 @@
+{
+  "base_run_id": "run_000",
+  "candidate_run_id": "run_001",
+  "domain_deltas": {
+    "cost": 0.0,
+    "execution": 0.0,
+    "latency": 0.0,
+    "quality": 0.0
+  },
+  "metric_deltas": {
+    "cost.avg_cost_usd": 0.0,
+    "execution.workflow_completion": 0.0,
+    "latency.p95_latency_ms": 0.0,
+    "quality.answer_correctness": 0.0,
+    "quality.policy_compliance": 0.0
+  },
+  "newly_failed_thresholds": [],
+  "overall_delta": 0.0,
+  "resolved_thresholds": []
+}

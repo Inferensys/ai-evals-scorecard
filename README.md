@@ -1,71 +1,89 @@
 # ai-evals-scorecard
 
-Specification-first templates for evaluating LLM and agentic systems with reproducible datasets, explicit metric definitions, and machine-readable reports.
+Deterministic, framework-agnostic evaluation toolkit for LLM and agentic workflows.
 
-Unlike prompt spot-checking, this repository treats evaluation as a versioned artifact pipeline:
-- dataset rows are immutable test cases
-- metrics are typed and weighted
-- reports are comparable across runs and models
+The repository provides:
 
-## Scope
+- Typed scorecard and dataset parsing.
+- Local deterministic evaluator backend (no external API dependency).
+- Score aggregation with threshold checks.
+- JSON run reports and baseline/candidate comparison reports.
 
-`ai-evals-scorecard` models four evaluation domains:
+## Setup
 
-- `quality`: correctness, groundedness, policy compliance
-- `execution`: tool success and workflow completion
-- `latency`: end-to-end and per-stage timings
-- `cost`: token + tool execution spend
-
-The repo is intentionally framework-agnostic. You can plug it into any runner.
-
-## Minimal Workflow
+Python `3.9+` and `uv` are required.
 
 ```bash
-# 1) define your metric contract
-cp examples/scorecard.yaml ./scorecard.yaml
-
-# 2) prepare dataset rows
-cp examples/dataset.support-workflow.jsonl ./datasets/support.jsonl
-
-# 3) run your evaluator (implementation-specific)
-evals run --dataset ./datasets/support.jsonl --scorecard ./scorecard.yaml --out ./reports/run-001.json
-
-# 4) compare with baseline
-evals compare --base ./reports/run-000.json --candidate ./reports/run-001.json
+uv sync --group dev
 ```
 
-## Contracts in This Repository
+## CLI
 
-- Scorecard contract: [`examples/scorecard.yaml`](examples/scorecard.yaml)
-- Dataset row contract: [`docs/eval-schema.md`](docs/eval-schema.md)
-- Report contract: [`examples/report.run-summary.json`](examples/report.run-summary.json)
-- Runner architecture: [`docs/runner-design.md`](docs/runner-design.md)
+### Run an evaluation
 
-## Scoring Model (Reference)
+```bash
+uv run evals run \
+  --dataset examples/dataset.support-workflow.jsonl \
+  --scorecard examples/scorecard.yaml \
+  --out reports/run-001.json \
+  --run-id run_001 \
+  --model mock/deterministic-v1
+```
 
-Default aggregate score:
+Expected stdout:
 
 ```text
-overall = 0.45 * quality + 0.25 * execution + 0.20 * latency + 0.10 * cost
+run_id=run_001
+overall_score=...
+threshold_failures=...
+report=reports/run-001.json
 ```
 
-Each domain is normalized to `[0, 100]`. Projects should tune these weights by risk profile.
+### Compare two reports
 
-## Example Use Cases
+```bash
+uv run evals compare \
+  --base reports/run-000.json \
+  --candidate reports/run-001.json \
+  --out reports/compare-000-001.json
+```
 
-- release-gate checks for model or prompt updates
-- nightly regression runs for RAG-backed support flows
-- canary comparison of routing strategies
-- incident backtesting with archived traces
+Expected stdout:
 
-## Reproducibility Rules
+```text
+base=run_000
+candidate=run_001
+overall_delta=...
+new_threshold_failures=...
+resolved_threshold_failures=...
+comparison=reports/compare-000-001.json
+```
 
-- Pin model version and runner commit in each report.
-- Keep datasets append-only; never mutate historical rows.
-- Store raw evaluator outputs alongside summarized metrics.
-- Fail CI when critical metric thresholds regress.
+## Report Shape
 
-## Demo and Visual Assets
+A run report includes:
 
-- Step-by-step run: [docs/demo.md](docs/demo.md)
-- Placeholder asset naming: [assets/README.md](assets/README.md)
+- `domain_scores` (normalized `0-100` per domain)
+- `overall_score` (weighted across domains)
+- `metric_summaries` (aggregate value, threshold, pass/fail)
+- `threshold_failures` (machine-readable regression surface)
+- `case_summary` (passed/failed/error counts)
+
+See example contracts:
+
+- [examples/scorecard.yaml](examples/scorecard.yaml)
+- [examples/dataset.support-workflow.jsonl](examples/dataset.support-workflow.jsonl)
+- [examples/report.run-summary.json](examples/report.run-summary.json)
+
+## Development
+
+Run tests:
+
+```bash
+uv run pytest
+```
+
+Implementation details are captured in:
+
+- [docs/implementation-plan.md](docs/implementation-plan.md)
+- [docs/runner-design.md](docs/runner-design.md)

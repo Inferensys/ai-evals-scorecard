@@ -1,0 +1,30 @@
+[project]
+name = "ai-evals-scorecard"
+version = "0.1.0"
+description = "Deterministic, framework-agnostic evaluation toolkit for LLM and agent systems"
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+dependencies = [
+  "pyyaml>=6.0.1",
+  "typer>=0.12.3",
+]
+
+[project.scripts]
+evals = "ai_evals_scorecard.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.2.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.24.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_evals_scorecard"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]

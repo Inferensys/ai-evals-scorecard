@@ -1,0 +1,97 @@
+{
+  "case_summary": {
+    "errors": 0,
+    "failed": 2,
+    "passed": 0,
+    "total": 2
+  },
+  "created_at": "2026-04-15T11:32:09Z",
+  "dataset_id": "dataset.support-workflow",
+  "domain_scores": {
+    "cost": 95.053,
+    "execution": 94.972,
+    "latency": 81.487,
+    "quality": 98.87
+  },
+  "metric_summaries": [
+    {
+      "domain": "quality",
+      "name": "answer_correctness",
+      "normalized_score": 100.0,
+      "operator": ">=",
+      "passed": true,
+      "threshold": 0.85,
+      "value": 0.9095
+    },
+    {
+      "domain": "quality",
+      "name": "policy_compliance",
+      "normalized_score": 97.74,
+      "operator": ">=",
+      "passed": false,
+      "threshold": 1.0,
+      "value": 0.9774
+    },
+    {
+      "domain": "execution",
+      "name": "workflow_completion",
+      "normalized_score": 94.972,
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.9,
+      "value": 0.85475
+    },
+    {
+      "domain": "latency",
+      "name": "p95_latency_ms",
+      "normalized_score": 81.487,
+      "operator": "<=",
+      "passed": false,
+      "threshold": 2200.0,
+      "value": 2699.831
+    },
+    {
+      "domain": "cost",
+      "name": "avg_cost_usd",
+      "normalized_score": 95.053,
+      "operator": "<=",
+      "passed": false,
+      "threshold": 0.04,
+      "value": 0.042082
+    }
+  ],
+  "model": "mock/deterministic-v1",
+  "overall_score": 94.037,
+  "run_id": "run_000",
+  "runner_commit": "unknown",
+  "threshold_failures": [
+    {
+      "actual": 0.9774,
+      "domain": "quality",
+      "metric": "policy_compliance",
+      "operator": ">=",
+      "threshold": 1.0
+    },
+    {
+      "actual": 0.85475,
+      "domain": "execution",
+      "metric": "workflow_completion",
+      "operator": ">=",
+      "threshold": 0.9
+    },
+    {
+      "actual": 2699.831,
+      "domain": "latency",
+      "metric": "p95_latency_ms",
+      "operator": "<=",
+      "threshold": 2200.0
+    },
+    {
+      "actual": 0.042082,
+      "domain": "cost",
+      "metric": "avg_cost_usd",
+      "operator": "<=",
+      "threshold": 0.04
+    }
+  ]
+}
